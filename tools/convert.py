@@ -1,37 +1,56 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PIL import Image
+from PIL import Image, ImageOps
 import argparse
 
 
 class PixelConverter(object):
+    CSV = 1
+    PNG = 2
+    C = 3
 
-    def __init__(self, inFile, outFile, hPixels, vPixels):
-        img = Image.open(inFile)
+    def __init__(self, input):
+        self.img = Image.open(input)
 
-        img = self.remove_alpha(img).convert('L')
+    def process(self, hPixels, vPixels, invert):
+        self.img = self.remove_alpha(self.img).convert('L')
+        if invert is True:
+            self.img = ImageOps.invert(self.img)
+        self.img = self.img.resize(size=(hPixels, vPixels),
+                                   resample=Image.LANCZOS)
+        self.imageField = ImageField(hPixels, vPixels)
+        self.imageField = self.translate_pixels(self.img, self.imageField)
 
-        img = img.resize(size=(hPixels, vPixels), resample=Image.LANCZOS)
+    def save(self, filename, filetype, constName):
+        if filetype == 'csv':
+            f = open(filename + '.csv', 'w')
+            for i in range(self.imageField.length()):
+                for x in range(self.imageField.length(i)):
+                    f.write(self.imageField.value(i, x) + ',')
+                f.write('\n')
+            f.close()
 
-        self.output = ImageField(hPixels, vPixels, img)
-        image = self.read_lines(img)
+        elif filetype == 'png':
+            self.img.save(filename + '.png')
 
-        self.output.save(outFile, ImageField.C)
+        elif filetype == 'c':
+            f = open(filename + '.c', 'w')
+            self.imageField.generate_c_code(constName, f)
+            f.close()
 
-    def read_lines(self, img):
-        image = []
-
+    def translate_pixels(self, img, imageField):
         for x in range(img.size[0]):
             start = -1
-            frame = self.output.create_frame()
+            frame = imageField.create_frame()
 
             for y in range(img.size[1]):
                 pixel = img.getpixel((x, y))
-                frame = self.output.write_pixel(frame, y, pixel)
+                frame = imageField.write_pixel(frame, y, pixel)
 
-            self.output.add_frame(frame)
-        return image
+            imageField.add_frame(frame)
+
+        return imageField
 
     def remove_alpha(self, img):
         img = img.convert('RGBA')
@@ -42,15 +61,11 @@ class PixelConverter(object):
 
 
 class ImageField(object):
-    CSV = 1
-    PNG = 2
-    C = 3
 
-    def __init__(self, hPixels, vPixels, imageData):
+    def __init__(self, hPixels, vPixels):
         self.hPixels = hPixels
         self.vPixels = vPixels
         self.image = []
-        self.imageData = imageData
 
     def create_frame(self):
         frame = [0] * self.vPixels
@@ -63,28 +78,22 @@ class ImageField(object):
     def add_frame(self, frame):
         self.image.append(frame)
 
-    def save(self, filename, filetype):
-        if filetype == self.CSV:
-            f = open(filename + '.csv', 'w')
-            for i in range(len(self.image)):
-                for x in range(len(self.image[i])):
-                    f.write(str(self.image[i][x]) + ',')
-                f.write('\n')
-            f.close()
+    def length(self, i=None):
+        if i is None:
+            return len(self.image)
+        return len(self.image[i])
 
-        elif filetype == self.PNG:
-            self.imageData.save(filename + '.png')
+    def value(self, a, b):
+        return str(self.image[a][b])
 
-        elif filetype == self.C:
-            f = open(filename + '.c', 'w')
-            self.generate_c_code(f)
-            f.close()
+    def generate_c_code(self, constName, f):
+        f.write('/*******************************\n')
+        f.write('*        Generated code        *\n')
+        f.write('*******************************/\n\n')
+        f.write('#define HPIXELS {}\n'.format(self.hPixels))
+        f.write('#define VPIXELS {}\n'.format(self.vPixels))
 
-    def generate_c_code(self, f):
-        f.write('\n#define HPIXELS ' + str(self.hPixels))
-        f.write('\n#define VPIXELS ' + str(self.vPixels))
-
-        f.write('\n\nconst uint8_t bitfield[][] = {')
+        f.write('\nconst uint8_t {}[HPIXELS][VPIXELS] = {{'.format(constName))
         for i in range(len(self.image)):
             f.write('\n    { ')
             f.write(", ".join("0x%02x" % self.image[i][x]
@@ -94,18 +103,13 @@ class ImageField(object):
                 f.write(',')
         f.write('\n};\n')
 
-if __name__ == '__main__':
-    # Defaults
-    width = 80
-    height = 40
-    inFile = 'simple.png'
-    outFile = 'out'
-    format = 'c'
 
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+
     parser.add_argument('-x', '--width',
                         help='Pixel density horizontal',
-                        type=int, default=40)
+                        type=int, default=80)
     parser.add_argument('-y', '--height',
                         help='Pixel density vertical',
                         type=int, default=40)
@@ -121,19 +125,25 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--invert',
                         help='Invert pixel weight',
                         action='store_true')
+    parser.add_argument('-c', '--const',
+                        help='(C output only) Const var name',
+                        type=str, default='bitfield')
     parser.add_argument('-v', '--verbose',
                         help='Print out internal variables',
                         action='store_true')
 
     args = parser.parse_args()
 
-    if args.width:
-        width = args.width
-    if args.height:
-        height = args.height
     if args.verbose:
         print('Verbose')
-        print("Width: {}".format(width))
-        print("Height: {}".format(height))
+        print("Width: {}".format(args.width))
+        print("Height: {}".format(args.height))
+        print("Input: {}".format(args.input))
+        print("Output: {}".format(args.output))
+        print("Format: {}".format(args.format))
+        print("Invert: {}".format(args.invert))
+        print("Const: {}".format(args.const))
 
-    obj = PixelConverter(inFile, outFile, width, height)
+    obj = PixelConverter(args.input)
+    obj.process(args.width, args.height, args.invert)
+    obj.save(args.output, args.format, args.const)
