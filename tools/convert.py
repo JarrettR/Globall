@@ -41,14 +41,13 @@ class PixelConverter(object):
 
     def translate_pixels(self, img, imageField):
         for x in range(img.size[0]):
-            start = -1
-            frame = imageField.create_frame()
+            frame = imageField.create_new_line()
 
             for y in range(img.size[1]):
                 pixel = img.getpixel((x, y))
                 frame = imageField.write_pixel(frame, y, pixel)
 
-            imageField.add_frame(frame)
+            imageField.add_line(frame)
 
         return imageField
 
@@ -67,16 +66,16 @@ class ImageField(object):
         self.vPixels = vPixels
         self.image = []
 
-    def create_frame(self):
-        frame = [0] * self.vPixels
-        return frame
+    def create_new_line(self):
+        line = [0] * self.vPixels
+        return line
 
-    def write_pixel(self, frame, pixel, value):
-        frame[pixel] = value
-        return frame
+    def write_pixel(self, line, pixel, value):
+        line[pixel] = value
+        return line
 
-    def add_frame(self, frame):
-        self.image.append(frame)
+    def add_line(self, line):
+        self.image.append(line)
 
     def length(self, i=None):
         if i is None:
@@ -90,18 +89,16 @@ class ImageField(object):
         f.write('/*******************************\n')
         f.write('*        Generated code        *\n')
         f.write('*******************************/\n\n')
+        f.write('#include <stdint.h>        /* For uint8_t definition */\n\n')
         f.write('#define HPIXELS {}\n'.format(self.hPixels))
         f.write('#define VPIXELS {}\n'.format(self.vPixels))
 
-        f.write('\nconst uint8_t {}[HPIXELS][VPIXELS] = {{'.format(constName))
         for i in range(len(self.image)):
-            f.write('\n    { ')
+            f.write('\nconst uint8_t {}_{}[VPIXELS] = {{ '.format(constName, i))
             f.write(", ".join("0x%02x" % self.image[i][x]
                               for x in range(len(self.image[i]))))
-            f.write(' }')
-            if i < len(self.image) - 1:
-                f.write(',')
-        f.write('\n};\n')
+            f.write(' };')
+        f.write('\n\n')
 
 
 if __name__ == '__main__':
