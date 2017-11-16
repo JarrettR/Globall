@@ -85,20 +85,37 @@ class ImageField(object):
     def value(self, a, b):
         return str(self.image[a][b])
 
-    def generate_c_code(self, constName, f):
+    def generate_c_code(self, constName, f, fragmented = False):
         f.write('/*******************************\n')
         f.write('*        Generated code        *\n')
         f.write('*******************************/\n\n')
         f.write('#include <stdint.h>        /* For uint8_t definition */\n\n')
+        f.write('#ifndef HPIXELS\n')
         f.write('#define HPIXELS {}\n'.format(self.hPixels))
         f.write('#define VPIXELS {}\n'.format(self.vPixels))
+        f.write('#endif\n')
 
-        for i in range(len(self.image)):
-            f.write('\nconst uint8_t {}_{}[VPIXELS] = {{ '.format(constName, i))
-            f.write(", ".join("0x%02x" % self.image[i][x]
-                              for x in range(len(self.image[i]))))
-            f.write(' };')
-        f.write('\n\n')
+        if not fragmented:
+        
+            f.write('\nconst uint8_t {}[HPIXELS][VPIXELS] = {{'.format(constName))
+            for i in range(len(self.image)):
+                if i > 0:
+                    f.write(',')
+                f.write('\n    { ')
+                f.write(", ".join("0x%02x" % self.image[i][x]
+                                  for x in range(len(self.image[i]))))
+                f.write(' }')
+            f.write('\n};')
+            f.write('\n\n')
+            
+        else:
+
+            for i in range(len(self.image)):
+                f.write('\nconst uint8_t {}_{}[VPIXELS] = {{'.format(constName, i))
+                f.write(", ".join("0x%02x" % self.image[i][x]
+                                  for x in range(len(self.image[i]))))
+                f.write(' };')
+            f.write('\n\n')
 
 
 if __name__ == '__main__':
