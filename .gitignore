@@ -44,9 +44,5 @@ funclist
 *.hxl
 *.cmf
 *.lst
-*.properties
-*.mk
-*.bash
 *.mum
-*.xml
 */dist/*

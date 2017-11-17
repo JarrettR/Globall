@@ -19,6 +19,8 @@
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "user.h"          /* User funct/params, such as InitApp */
+#include "../tools/blue.c"
+#include "../tools/green.c"
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
