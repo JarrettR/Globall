@@ -18,6 +18,7 @@
 #endif
 
 #include "user.h"
+#include "at.h"
 
 /******************************************************************************/
 /* User Functions                                                             */
@@ -86,10 +87,7 @@ void InitApp(void)
     ANSELB = 0x00;
     ANSELC = 0x00;
 
-    /* STart MCC block */
-      /**
-    LATx registers
-    */   
+  
     LATA = 0x00;    
     LATB = 0x00;    
     LATC = 0x00;    
@@ -132,7 +130,9 @@ void InitApp(void)
     SSPDATPPS = 0x02;   //RA2->MSSP:SDI;
     RB6PPS = 0x10;   //RB6->MSSP:SCK;
     RB4PPS = 0x11;   //RB4->MSSP:SDO;
-
+    
+    ATINPPS = 0x14;   //RC4->AT:ATIN;
+    
     PPSLOCK = 0x55;
     PPSLOCK = 0xAA;
     PPSLOCKbits.PPSLOCKED = 0x01; // lock PPS
@@ -164,7 +164,9 @@ void InitApp(void)
     SSP1ADD = 0x00;
 
     /* Configure the IPEN bit (1=on) in RCON to turn on/off int priorities */
-
+    AT_Initialize();
     /* Enable interrupts */
+    INTCONbits.GIE = 1;
+    INTCONbits.PEIE = 1;
 }
 

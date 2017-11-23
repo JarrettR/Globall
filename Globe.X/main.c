@@ -19,6 +19,7 @@
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "user.h"          /* User funct/params, such as InitApp */
+#include "at.h"
 #include "../tools/blue.c"
 #include "../tools/green.c"
 
@@ -50,7 +51,7 @@ void main(void)
 
     while(1)
     {
-        LATAbits.LATA5 = state;
+        //LATAbits.LATA5 = state;
         for(i = 0; i < 50; i++)
             __delay_ms(10);
         state = ~state;

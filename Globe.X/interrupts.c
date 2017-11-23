@@ -14,6 +14,7 @@
 
 #include <stdint.h>         /* For uint8_t definition */
 #include <stdbool.h>        /* For true/false definition */
+#include "at.h"
 
 #endif
 
@@ -24,7 +25,7 @@
 /* High-priority service */
 
 #if defined(__XC) || defined(HI_TECH_C)
-void interrupt high_isr(void)
+void interrupt ISR(void)
 #elif defined (__18CXX)
 #pragma code high_isr=0x08
 #pragma interrupt high_isr
@@ -34,72 +35,15 @@ void high_isr(void)
 #endif
 
 {
+    if(INTCONbits.PEIE == 1 && PIE5bits.AT1IE == 1 && PIR5bits.AT1IF == 1)
+    {
+        AT_ISR();
+    }
+    else
+    {
+        //Unhandled Interrupt
+    }
 
-      /* This code stub shows general interrupt handling.  Note that these
-      conditional statements are not handled within 3 seperate if blocks.
-      Do not use a seperate if block for each interrupt flag to avoid run
-      time errors. */
 
-#if 0
-    
-      /* TODO Add High Priority interrupt routine code here. */
-
-      /* Determine which flag generated the interrupt */
-      if(<Interrupt Flag 1>)
-      {
-          <Interrupt Flag 1=0>; /* Clear Interrupt Flag 1 */
-      }
-      else if (<Interrupt Flag 2>)
-      {
-          <Interrupt Flag 2=0>; /* Clear Interrupt Flag 2 */
-      }
-      else
-      {
-          /* Unhandled interrupts */
-      }
-
-#endif
 
 }
-
-#if defined (__18F14K50_H) // PIC16 does not have this
-/* Low-priority interrupt routine */
-#if defined(__XC) || defined(HI_TECH_C)
-
-#elif defined (__18CXX)
-#pragma code low_isr=0x18
-#pragma interruptlow low_isr
-void low_isr(void)
-#else
-#error "Invalid compiler selection for implemented ISR routines"
-#endif
-{
-
-      /* This code stub shows general interrupt handling.  Note that these
-      conditional statements are not handled within 3 seperate if blocks.
-      Do not use a seperate if block for each interrupt flag to avoid run
-      time errors. */
-
-#if 0
-
-      /* TODO Add Low Priority interrupt routine code here. */
-
-      /* Determine which flag generated the interrupt */
-      if(<Interrupt Flag 1>)
-      {
-          <Interrupt Flag 1=0>; /* Clear Interrupt Flag 1 */
-      }
-      else if (<Interrupt Flag 2>)
-      {
-          <Interrupt Flag 2=0>; /* Clear Interrupt Flag 2 */
-      }
-      else
-      {
-          /* Unhandled interrupts */
-      }
-
-#endif
-
-}
-
-#endif // PIC18 def
