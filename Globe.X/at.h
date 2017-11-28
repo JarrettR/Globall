@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 
+unsigned int angleInt = 0;
 
 void AT_Initialize(void);
 
@@ -314,7 +315,27 @@ bool AT_IsPeriodCountAvailable(void);
   @Returns
     None
 */
-void AT_ISR(void);
+inline void AT_ISR(void);
+
+
+/**
+  @Summary	
+    Clears Period interrupt flag.
+
+  @Description
+    This routine is used to implement the ISR for the interrupt-driven
+    implementations.
+
+  @Preconditions
+    None
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+inline void AT_Period(void);
 
 
 /**
@@ -334,7 +355,7 @@ void AT_ISR(void);
   @Returns
     None
 */
-void AT_Phase(void);
+inline void AT_Phase(void);
 
 
 

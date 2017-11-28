@@ -17,27 +17,27 @@ void AT_Initialize(void)
     // 
     AT1RESH = 0x00;
     // 
-    AT1RESL = 0x07;
+    AT1RESL = 0x37;
     // 
     AT1MISSH = 0x00;
     // 
     AT1MISSL = 0x00;
-    // AT1POL rising edge; AT1EN enabled; AT1PREC reset; AT1APMOD Adaptive Missing Pulse mode; AT1PS AT1CLK; AT1MODE Single Pulse mode; 
-    AT1CON0 = 0xF2;
+    // AT1POL rising edge; AT1EN enabled; AT1PREC reset; AT1APMOD Adaptive Missing Pulse mode; AT1PS AT1CLK/4; AT1MODE Single Pulse mode; 
+    AT1CON0 = 0xE2;
     // AT1PRP Active high; AT1MPP Active high; AT1PHP Active high; 
     AT1CON1 = 0x00;
     // AT1PHSIF Angle Interrupt not occured; AT1PERIF Period Interrupt not occured; AT1MISSIF Missed Pulse Interrupt not occured; 
     AT1IR0 = 0x00;
-    // AT1PHSIE enabled; AT1PERIE disabled; AT1MISSIE disabled; 
-    AT1IE0 = 0x04;
+    // AT1PHSIE enabled; AT1PERIE enabled; AT1MISSIE disabled; 
+    AT1IE0 = 0x05;
     // AT1CC1IF Not occured; AT1CC3IF Not occured; AT1CC2IF Not occured; 
     AT1IR1 = 0x00;
     // AT1CC2IE disabled; AT1CC1IE disabled; AT1CC3IE disabled; 
     AT1IE1 = 0x00;
     // 
-    AT1STPTH = 0x04;
+    AT1STPTH = 0x00;
     // 
-    AT1STPTL = 0x66;
+    AT1STPTL = 0x00;
     // 
     AT1CC1H = 0x00;
     // 
@@ -140,9 +140,13 @@ bool AT_IsMissedPulseCountAvailable(void)
 
 
 
-void AT_ISR(void)
+inline void AT_ISR(void)
 {
     PIR5bits.AT1IF = 0;
+    if(AT1IR0bits.AT1PERIF)
+    {
+        AT_Period();
+    }
     if(AT1IR0bits.AT1PHSIF)
     {
         AT_Phase();
@@ -150,13 +154,20 @@ void AT_ISR(void)
 }
 
 
-void AT_Phase(void)
+inline void AT_Period(void)
+{
+    static uint8_t state = 1;
+    AT1IR0bits.AT1PERIF = 0;
+    LATAbits.LATA5 = state;
+    state = ~state;
+}
+inline void AT_Phase(void)
 {
     //static uint8_t state = 1;
     AT1IR0bits.AT1PHSIF = 0;
     //LATAbits.LATA5 = state;
     //state = ~state;
-    //angleInt = (angleInt + 1) % HPIXELS;
+    angleInt = (angleInt + 1) % HPIXELS;
 }
 
 

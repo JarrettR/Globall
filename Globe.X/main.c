@@ -43,7 +43,6 @@ void main(void)
 
     unsigned int i;
     unsigned int frame;
-    unsigned int angleInt = 0;
     uint8_t state = 0;
     uint8_t mapInc = 5;    
     
@@ -55,29 +54,32 @@ void main(void)
         blob[i] = 0x00;
     }
 
-    frame = 1;
+    frame = 0;
+    
+    EnableInterrupts();
+    
     
     while(1)
     {
         
-        //if (frame != angleInt) {
-            LATAbits.LATA5 = state;
-            frame = angleInt % HPIXELS;
+        if (frame != angleInt) {
+            frame = angleInt;
+            
             if(frame == 0) {
                 state = ~state;
             }
-            for(i = 0; i < TABLESIZE; i++) {
-                blob[i] = 0x00;
-            }
+            //LATAbits.LATA5 = state;
+            DisableInterrupts();
             for(i = 0; i < VPIXELS; i++) {
                 setChannel(blob, i, blueMap[frame][i]);
                 setChannel(blob, 23 - i, greenMap[frame][i]);
             }
             LEDMap(blob);
+            EnableInterrupts();
             
-            __delay_ms(10);
-            angleInt++;
-        //}
+            //__delay_ms(100);
+            //angleInt++;
+        }
     }
 
 }

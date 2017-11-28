@@ -79,6 +79,16 @@ void SPIWrite(uint8_t data)
     while(!SSP1STATbits.BF);
 }
 
+inline void EnableInterrupts(void) {
+    INTCONbits.GIE = 1;
+    INTCONbits.PEIE = 1;
+}
+
+inline void DisableInterrupts(void) {
+    INTCONbits.GIE = 0;
+    INTCONbits.PEIE = 0;
+}
+
 void InitApp(void)
 {
 
@@ -166,7 +176,6 @@ void InitApp(void)
     /* Configure the IPEN bit (1=on) in RCON to turn on/off int priorities */
     AT_Initialize();
     /* Enable interrupts */
-    //INTCONbits.GIE = 1;
-    //INTCONbits.PEIE = 1;
+    EnableInterrupts();
 }
 
