@@ -20,8 +20,8 @@
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "user.h"          /* User funct/params, such as InitApp */
 #include "at.h"
-#include "../tools/blue.c"
-#include "../tools/green.c"
+#include "../tools/blue.h"
+#include "../tools/green.h"
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
@@ -42,33 +42,42 @@ void main(void)
     InitApp();
 
     unsigned int i;
+    unsigned int frame;
+    unsigned int angleInt = 0;
     uint8_t state = 0;
-    uint8_t mapInc = 0;    
+    uint8_t mapInc = 5;    
     
     TRISAbits.TRISA5 = 0;
     uint8_t blob[TABLESIZE];
     
+    //Zero out buffer
+    for(i = 0; i < TABLESIZE; i++) {
+        blob[i] = 0x00;
+    }
 
+    frame = 1;
+    
     while(1)
     {
-        //LATAbits.LATA5 = state;
-        for(i = 0; i < 50; i++)
-            __delay_ms(10);
-        state = ~state;
         
-        //Zero out buffer
-        for(i = 0; i < TABLESIZE; i++) {
-            blob[i] = 0x00;
-        }
-        
-        //Colourspace is 0xFFF levels
-        //Dividing/multiplying by four to speed up the fade
-        for(i = 0; i < 0x1000 / 4; i++) {
-            setChannel(blob, mapInc, i * 4);
+        //if (frame != angleInt) {
+            LATAbits.LATA5 = state;
+            frame = angleInt % HPIXELS;
+            if(frame == 0) {
+                state = ~state;
+            }
+            for(i = 0; i < TABLESIZE; i++) {
+                blob[i] = 0x00;
+            }
+            for(i = 0; i < VPIXELS; i++) {
+                setChannel(blob, i, blueMap[frame][i]);
+                setChannel(blob, 23 - i, greenMap[frame][i]);
+            }
             LEDMap(blob);
-        }
-        
-        mapInc = (mapInc + 1) % 24;
+            
+            __delay_ms(10);
+            angleInt++;
+        //}
     }
 
 }

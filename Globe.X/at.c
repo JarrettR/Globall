@@ -1,5 +1,7 @@
 #include <xc.h>
 #include "at.h"
+#include "../tools/blue.h"
+#include "../tools/green.h"
 
 /**
   Section: AT APIs
@@ -21,7 +23,7 @@ void AT_Initialize(void)
     // 
     AT1MISSL = 0x00;
     // AT1POL rising edge; AT1EN enabled; AT1PREC reset; AT1APMOD Adaptive Missing Pulse mode; AT1PS AT1CLK; AT1MODE Single Pulse mode; 
-    AT1CON0 = 0xC2;
+    AT1CON0 = 0xF2;
     // AT1PRP Active high; AT1MPP Active high; AT1PHP Active high; 
     AT1CON1 = 0x00;
     // AT1PHSIF Angle Interrupt not occured; AT1PERIF Period Interrupt not occured; AT1MISSIF Missed Pulse Interrupt not occured; 
@@ -33,9 +35,9 @@ void AT_Initialize(void)
     // AT1CC2IE disabled; AT1CC1IE disabled; AT1CC3IE disabled; 
     AT1IE1 = 0x00;
     // 
-    AT1STPTH = 0x00;
+    AT1STPTH = 0x04;
     // 
-    AT1STPTL = 0x8C;
+    AT1STPTL = 0x66;
     // 
     AT1CC1H = 0x00;
     // 
@@ -150,10 +152,11 @@ void AT_ISR(void)
 
 void AT_Phase(void)
 {
-    static uint8_t state = 1;
+    //static uint8_t state = 1;
     AT1IR0bits.AT1PHSIF = 0;
-    LATAbits.LATA5 = state;
-    state = ~state;
+    //LATAbits.LATA5 = state;
+    //state = ~state;
+    //angleInt = (angleInt + 1) % HPIXELS;
 }
 
 

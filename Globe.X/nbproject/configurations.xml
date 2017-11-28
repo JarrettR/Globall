@@ -6,6 +6,9 @@
                    projectFiles="true">
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
+      <itemPath>at.h</itemPath>
+      <itemPath>../tools/blue.h</itemPath>
+      <itemPath>../tools/green.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -19,8 +22,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>system.c</itemPath>
       <itemPath>user.c</itemPath>
-      <itemPath>../tools/blue.c</itemPath>
-      <itemPath>../tools/green.c</itemPath>
+      <itemPath>at.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -34,6 +36,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../tools</Elem>
+    <Elem>.</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

@@ -28,8 +28,8 @@ void ConfigureOscillator(void)
     /* Typical actions in this function are to tweak the oscillator tuning
     register, select new clock sources, and to wait until new clock sources
     are stable before resuming execution of the main project. */
-    //OSCCON = 0x70;
-    OSCCON = 0x38;
+    OSCCON = 0x70;
+    //OSCCON = 0x38;
     OSCTUNE = 0x00;
     // Wait for PLL to stabilize
     //while(PLLR == 0)

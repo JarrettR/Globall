@@ -35,7 +35,7 @@ class PixelConverter(object):
             self.img.save(filename + '.png')
 
         elif filetype == 'c':
-            f = open(filename + '.c', 'w')
+            f = open(filename + '.h', 'w')
             self.imageField.generate_c_code(constName, f)
             f.close()
 

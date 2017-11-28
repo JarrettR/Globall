@@ -65,7 +65,7 @@ void LEDMap(uint8_t *blob)
     }
     
     XLAT = 1;
-    __delay_ms(1);
+    __delay_ms(10);
     XLAT = 0;
 }
 
@@ -166,7 +166,7 @@ void InitApp(void)
     /* Configure the IPEN bit (1=on) in RCON to turn on/off int priorities */
     AT_Initialize();
     /* Enable interrupts */
-    INTCONbits.GIE = 1;
-    INTCONbits.PEIE = 1;
+    //INTCONbits.GIE = 1;
+    //INTCONbits.PEIE = 1;
 }
 
