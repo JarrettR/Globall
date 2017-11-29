@@ -56,18 +56,17 @@ void main(void)
 
     frame = 0;
     
+    AT_ResolutionSet(HPIXELS - 1);
+    
     EnableInterrupts();
     
     
     while(1)
     {
         
-        if (frame != angleInt) {
+        if (frame != angleInt && angleInt < HPIXELS) {
             frame = angleInt;
             
-            if(frame == 0) {
-                state = ~state;
-            }
             //LATAbits.LATA5 = state;
             DisableInterrupts();
             for(i = 0; i < VPIXELS; i++) {
@@ -77,8 +76,6 @@ void main(void)
             LEDMap(blob);
             EnableInterrupts();
             
-            //__delay_ms(100);
-            //angleInt++;
         }
     }
 

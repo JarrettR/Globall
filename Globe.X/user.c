@@ -30,7 +30,7 @@ void setChannel(uint8_t *blob, uint8_t channel, uint16_t value) {
     uint8_t byteAddr;
     
     if(channel % 2 == 0) {
-        byteAddr = (channel * 3) / 2;
+        byteAddr = (channel * 3) >> 1;
         lvalue = (uint8_t)(value & 0xFF);
         rvalue = (uint8_t)(value >> 8);
         
@@ -40,7 +40,7 @@ void setChannel(uint8_t *blob, uint8_t channel, uint16_t value) {
         
         *(blob + byteAddr + 1) = newVal;
     } else {
-        byteAddr = (((channel - 1) * 3) / 2) + 1;
+        byteAddr = (((channel - 1) * 3) >> 1) + 1;
         
         lvalue = (uint8_t)(value << 4) & 0xF0;
         rvalue = (uint8_t)(value >> 4);
@@ -158,13 +158,7 @@ void InitApp(void)
     
     OE = 0;
 
-    //SSPSTAT = 0x40;        // Set SMP=0 and CKE=1. Notes: The lower 6 bit is read only
-    //SSPCON1 = 0x20;        // Enable SPI Master with Fosc/4
-    
-    //SSPSTATbits.CKE = 0;       //Transmit on idle->active clock edge
-    
-    //SSP1CONbits.SSPEN = 1;
-        // R_nW write_noTX; P stopbit_notdetected; S startbit_notdetected; BF RCinprocess_TXcomplete; SMP Middle; UA dontupdate; CKE Idle to Active; D_nA lastbyte_address; 
+    // R_nW write_noTX; P stopbit_notdetected; S startbit_notdetected; BF RCinprocess_TXcomplete; SMP Middle; UA dontupdate; CKE Idle to Active; D_nA lastbyte_address; 
     SSP1STAT = 0x40;
     
     // SSPEN enabled; WCOL no_collision; CKP Idle:Low, Active:High; SSPM FOSC/4; SSPOV no_overflow; 

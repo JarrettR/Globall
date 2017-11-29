@@ -31,7 +31,7 @@ DEFAULTCONF=XC8_16F1619
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=XC8_18F14K50 XC8_16F1619 
+ALLCONFS=XC8_16F1619 
 
 
 # build
@@ -45,14 +45,12 @@ ALLCONFS=XC8_18F14K50 XC8_16F1619
 
 # clobber
 .clobber-impl: .clobber-pre .depcheck-impl
-	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=XC8_18F14K50 clean
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=XC8_16F1619 clean
 
 
 
 # all
 .all-impl: .all-pre .depcheck-impl
-	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=XC8_18F14K50 build
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=XC8_16F1619 build
 
 
