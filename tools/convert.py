@@ -85,7 +85,7 @@ class ImageField(object):
     def value(self, a, b):
         return str(self.image[a][b])
 
-    def generate_c_code(self, constName, f, fragmented = False):
+    def generate_c_code(self, constName, f, fragmented = True):
         f.write('/*******************************\n')
         f.write('*        Generated code        *\n')
         f.write('*******************************/\n\n')
@@ -109,6 +109,7 @@ class ImageField(object):
             f.write('\n\n')
             
         else:
+            ledMapLines = ""
 
             for i in range(len(self.image)):
                 f.write('\nconst uint8_t {}_{}[VPIXELS] = {{'.format(constName, i))
@@ -116,6 +117,11 @@ class ImageField(object):
                                   for x in range(len(self.image[i]))))
                 f.write(' };')
             f.write('\n\n')
+            
+            f.write('\nconst uint8_t *ledMapFragments[HPIXELS] = {\n    ')
+            f.write(",\n    ".join("{}_{}".format(constName, x)
+                                  for x in range(len(self.image))))
+            f.write('\n};\n\n')
 
 
 if __name__ == '__main__':
@@ -133,7 +139,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output',
                         help='Output file, no extension',
                         type=str, default='out')
-    parser.add_argument('-f', '--format',
+    parser.add_argument('-t', '--type',
                         help='Output format(csv, png, or c)',
                         type=str, default='csv')
     parser.add_argument('-n', '--invert',
@@ -142,6 +148,9 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--const',
                         help='(C output only) Const var name',
                         type=str, default='bitfield')
+    parser.add_argument('-f', '--fragmented',
+                        help='Split up data for fragmented memory',
+                        action='store_true')
     parser.add_argument('-v', '--verbose',
                         help='Print out internal variables',
                         action='store_true')
@@ -154,10 +163,11 @@ if __name__ == '__main__':
         print("Height: {}".format(args.height))
         print("Input: {}".format(args.input))
         print("Output: {}".format(args.output))
-        print("Format: {}".format(args.format))
+        print("Type: {}".format(args.type))
         print("Invert: {}".format(args.invert))
         print("Const: {}".format(args.const))
+        print("Frag: {}".format(args.fragmented))
 
     obj = PixelConverter(args.input)
     obj.process(args.width, args.height, args.invert)
-    obj.save(args.output, args.format, args.const)
+    obj.save(args.output, args.format, args.const, args.fragmented)
