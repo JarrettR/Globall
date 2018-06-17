@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 
-unsigned int angleInt = 0;
+volatile unsigned int angleInt = 0;
 
 void AT_Initialize(void);
 

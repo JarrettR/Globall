@@ -17,11 +17,12 @@
 
 #endif
 
-#include "system.h"        /* System funct/params, like osc/peripheral config */
-#include "user.h"          /* User funct/params, such as InitApp */
+#include "mcc_generated_files/mcc.h" 
+#include "user.h" 
 #include "at.h"
 #include "../tools/blue.h"
 #include "../tools/green.h"
+
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
@@ -36,17 +37,21 @@
 void main(void)
 {
     /* Configure the oscillator for the device */
-    ConfigureOscillator();
+    //ConfigureOscillator();
 
     /* Initialize I/O and Peripherals for application */
-    InitApp();
+    //InitApp();
+    SYSTEM_Initialize();
 
     unsigned int i;
+    uint8_t x;
     unsigned int frame;
-    uint8_t state = 0;
     uint8_t mapInc = 5;    
     
-    TRISAbits.TRISA5 = 0;
+    BLANK1_SetLow();
+    XLAT1_SetLow();
+    
+    
     uint8_t blob[TABLESIZE];
     
     //Zero out buffer
@@ -58,25 +63,30 @@ void main(void)
     
     AT_ResolutionSet(HPIXELS - 1);
     
-    EnableInterrupts();
+    //EnableInterrupts();
+    DisableInterrupts();
+    x = 0;
     
     
     while(1)
     {
         
-        if (frame != angleInt && angleInt < HPIXELS) {
-            frame = angleInt;
             
-            //LATAbits.LATA5 = state;
-            DisableInterrupts();
-            for(i = 0; i < VPIXELS; i++) {
-                setChannel(blob, i, blueMap[frame][i]);
-                setChannel(blob, 23 - i, greenMap[frame][i]);
-            }
-            LEDMap(blob);
-            EnableInterrupts();
-            
+        LED1_Toggle();
+        __delay_ms(500);
+        //LEDSingle(x);
+        x++;
+        for(i = 0; i < TABLESIZE; i++) {
+            blob[i] = 0x00;
         }
+        
+        for(i = 0; i < 0x1000 / 4; i++) {
+
+            setChannel(blob, mapInc, i * 4);
+            LEDMap(blob);
+        }
+        
+        mapInc = (mapInc + 1) % 24;
     }
 
 }

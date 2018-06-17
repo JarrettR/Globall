@@ -57,16 +57,37 @@ void LEDMap(uint8_t *blob)
 {
     uint8_t data = 0;
     
-    XLAT = 0;
+    XLAT1_SetLow();
     
+   
     for(int i = TABLESIZE - 1; i >= 0; i--) {
         data = *(blob + i);
         SPIWrite(data);
+        //SPIWrite(0xFF & i);
     }
     
-    XLAT = 1;
+    XLAT1_SetHigh();
     __delay_ms(10);
-    XLAT = 0;
+    XLAT1_SetLow();
+}
+
+void LEDSingle(uint8_t address)
+{
+    uint8_t data = 0;
+    
+    XLAT1_SetLow();
+    
+    for(int i = TABLESIZE - 1; i >= 0; i--) {
+        if(i == address) {
+            SPIWrite(0x00);
+        } else {
+            SPIWrite(0xFF);
+        }
+    }
+    
+    XLAT1_SetHigh();
+    __delay_ms(10);
+    XLAT1_SetLow();
 }
 
 void SPIWrite(uint8_t data)
@@ -88,88 +109,3 @@ inline void DisableInterrupts(void) {
     INTCONbits.GIE = 0;
     INTCONbits.PEIE = 0;
 }
-
-void InitApp(void)
-{
-
-    /* Setup analog functionality and port direction */
-    ANSELA = 0x00;
-    ANSELB = 0x00;
-    ANSELC = 0x00;
-
-  
-    LATA = 0x00;    
-    LATB = 0x00;    
-    LATC = 0x00;    
-
-    /**
-    TRISx registers
-    */    
-    TRISA = 0x37;
-    TRISB = 0xA0;
-    TRISC = 0xFF;
-
-    /**
-    ANSELx registers
-    */   
-    ANSELC = 0xCF;
-    ANSELB = 0xA0;
-    ANSELA = 0x13;
-
-    /**
-    WPUx registers
-    */ 
-    WPUB = 0xF0;
-    WPUA = 0x3F;
-    WPUC = 0xFF;
-    OPTION_REGbits.nWPUEN = 0;
-
-    /**
-    ODx registers
-    */   
-    ODCONA = 0x00;
-    ODCONB = 0x00;
-    ODCONC = 0x00;
-    
-
-    PPSLOCK = 0x55;
-    PPSLOCK = 0xAA;
-    PPSLOCKbits.PPSLOCKED = 0x00; // unlock PPS
-
-    SSPCLKPPS = 0x0E;   //RB6->MSSP:SCK;
-    SSPDATPPS = 0x02;   //RA2->MSSP:SDI;
-    RB6PPS = 0x10;   //RB6->MSSP:SCK;
-    RB4PPS = 0x11;   //RB4->MSSP:SDO;
-    
-    ATINPPS = 0x14;   //RC4->AT:ATIN;
-    
-    PPSLOCK = 0x55;
-    PPSLOCK = 0xAA;
-    PPSLOCKbits.PPSLOCKED = 0x01; // lock PPS
-    /* End MCC  */
-    
-    /* Initialize peripherals */
-    OETRIS = 0;
-    XLATTRIS = 0;
-    
-    SPISDOTRIS = 0;   // SDO
-    SPISCKTRIS = 0;   // SCK
-    
-    
-    OE = 0;
-
-    // R_nW write_noTX; P stopbit_notdetected; S startbit_notdetected; BF RCinprocess_TXcomplete; SMP Middle; UA dontupdate; CKE Idle to Active; D_nA lastbyte_address; 
-    SSP1STAT = 0x40;
-    
-    // SSPEN enabled; WCOL no_collision; CKP Idle:Low, Active:High; SSPM FOSC/4; SSPOV no_overflow; 
-    SSP1CON1 = 0x20;
-    
-    // SSP1ADD 0; 
-    SSP1ADD = 0x00;
-
-    /* Configure the IPEN bit (1=on) in RCON to turn on/off int priorities */
-    AT_Initialize();
-    /* Enable interrupts */
-    EnableInterrupts();
-}
-
