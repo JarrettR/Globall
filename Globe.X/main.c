@@ -80,9 +80,9 @@ void main(void)
             blob[i] = 0x00;
         }
         
-        for(i = 0; i < 0x1000 / 4; i++) {
+        for(i = 0; i < 0x1000 / 8; i++) {
 
-            setChannel(blob, mapInc, i * 4);
+            setChannel(blob, mapInc, i * 8);
             LEDMap(blob);
         }
         

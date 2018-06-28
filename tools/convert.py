@@ -22,7 +22,7 @@ class PixelConverter(object):
         self.imageField = ImageField(hPixels, vPixels)
         self.imageField = self.translate_pixels(self.img, self.imageField)
 
-    def save(self, filename, filetype, constName):
+    def save(self, filename, filetype, constName, fragmented, large):
         if filetype == 'csv':
             f = open(filename + '.csv', 'w')
             for i in range(self.imageField.length()):
@@ -36,7 +36,7 @@ class PixelConverter(object):
 
         elif filetype == 'c':
             f = open(filename + '.h', 'w')
-            self.imageField.generate_c_code(constName, f)
+            self.imageField.generate_c_code(constName, f, fragmented, large)
             f.close()
 
     def translate_pixels(self, img, imageField):
@@ -85,13 +85,15 @@ class ImageField(object):
     def value(self, a, b):
         return str(self.image[a][b])
 
-    def generate_c_code(self, constName, f, fragmented = True):
+    def generate_c_code(self, constName, f, fragmented, large):
         f.write('/*******************************\n')
         f.write('*        Generated code        *\n')
         f.write('*******************************/\n\n')
         f.write('#include <stdint.h>        /* For uint8_t definition */\n\n')
         f.write('#ifndef HPIXELS\n')
         f.write('#define HPIXELS {}\n'.format(self.hPixels))
+        f.write('#endif\n')
+        f.write('#ifndef VPIXELS\n')
         f.write('#define VPIXELS {}\n'.format(self.vPixels))
         f.write('#endif\n')
 
@@ -151,6 +153,9 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--fragmented',
                         help='Split up data for fragmented memory',
                         action='store_true')
+    parser.add_argument('-l', '--large',
+                        help='Larger, 12-bit pixels',
+                        action='store_true')
     parser.add_argument('-v', '--verbose',
                         help='Print out internal variables',
                         action='store_true')
@@ -167,7 +172,8 @@ if __name__ == '__main__':
         print("Invert: {}".format(args.invert))
         print("Const: {}".format(args.const))
         print("Frag: {}".format(args.fragmented))
+        print("Large: {}".format(args.large))
 
     obj = PixelConverter(args.input)
     obj.process(args.width, args.height, args.invert)
-    obj.save(args.output, args.format, args.const, args.fragmented)
+    obj.save(args.output, args.format, args.const, args.fragmented, args.large)

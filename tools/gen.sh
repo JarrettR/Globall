@@ -1,2 +1,2 @@
-python convert.py -i World_map.png -f c -v -c blueMap -x 152 -y 20 -o blue
-python convert.py -i World_map.png -f c -n -v -c greenMap -x 152 -y 20 -o green
+python convert.py -i left-align.png -t c -n -v -c blueMap -x 5 -y 10 -o blue
+python convert.py -i right-align.png -t c -n -v -c greenMap -x 5 -y 10 -o green

@@ -31,7 +31,6 @@
         <itemPath>mcc_generated_files/device_config.c</itemPath>
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
       </logicalFolder>
-      <itemPath>interrupts.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>user.c</itemPath>
       <itemPath>at.c</itemPath>
