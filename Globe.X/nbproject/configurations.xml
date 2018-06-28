@@ -15,6 +15,7 @@
       <itemPath>at.h</itemPath>
       <itemPath>../tools/blue.h</itemPath>
       <itemPath>../tools/green.h</itemPath>
+      <itemPath>gamma.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

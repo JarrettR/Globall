@@ -20,6 +20,7 @@
 #include "mcc_generated_files/mcc.h" 
 #include "user.h" 
 #include "at.h"
+#include "gamma.h"
 #include "../tools/blue.h"
 #include "../tools/green.h"
 
@@ -80,9 +81,9 @@ void main(void)
             blob[i] = 0x00;
         }
         
-        for(i = 0; i < 0x1000 / 8; i++) {
+        for(i = 0; i < 0xff; i++) {
 
-            setChannel(blob, mapInc, i * 8);
+            setChannel(blob, mapInc, gamma[i] << 16);
             LEDMap(blob);
         }
         
