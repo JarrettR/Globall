@@ -49,7 +49,7 @@ void main(void)
     unsigned int frame;
     uint8_t mapInc = 5;    
     
-    BLANK1_SetLow();
+    //BLANK1_SetHigh();
     XLAT1_SetLow();
     
     
@@ -73,21 +73,26 @@ void main(void)
     {
         
             
+        //AUX1_Toggle();
         LED1_Toggle();
-        __delay_ms(500);
+        //__delay_ms(200);
         //LEDSingle(x);
-        x++;
+        //x++;
+        
+                         
         for(i = 0; i < TABLESIZE; i++) {
             blob[i] = 0x00;
         }
         
         for(i = 0; i < 0xff; i++) {
 
+            //SDO_SetHigh();
+            //SCK_SetHigh();
             setChannel(blob, mapInc, gamma[i] << 16);
             LEDMap(blob);
         }
         
-        mapInc = (mapInc + 1) % 24;
+        mapInc = (mapInc + 1) % 36;
     }
 
 }

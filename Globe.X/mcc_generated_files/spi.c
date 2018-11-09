@@ -16,7 +16,7 @@
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.65.2
         Device            :  PIC16F1619
-        Driver Version    :  2.01
+        Driver Version    :  2.02
     The generated drivers are tested against the following:
         Compiler          :  XC8 1.45
         MPLAB 	          :  MPLAB X 4.15
@@ -118,7 +118,7 @@ uint8_t SPI_Exchange8bitBuffer(uint8_t *dataIn, uint8_t bufLen, uint8_t *dataOut
             {
                 while(bytesWritten < bufLen )
                 {
-                    dataOut[bytesWritten] = SPI_Exchange8bit(DUMMY_DATA);
+                    dataOut[bytesWritten] = SPI_Exchange8bit(SPI_DUMMY_DATA);
 
                     bytesWritten++;
                 }

@@ -56,10 +56,10 @@ void setChannel(uint8_t *blob, uint8_t channel, uint16_t value) {
 void LEDMap(uint8_t *blob)
 {
     uint8_t data = 0;
+    DisableInterrupts();
     
     XLAT1_SetLow();
     
-   
     for(int i = TABLESIZE - 1; i >= 0; i--) {
         data = *(blob + i);
         SPIWrite(data);
@@ -69,6 +69,7 @@ void LEDMap(uint8_t *blob)
     XLAT1_SetHigh();
     __delay_ms(10);
     XLAT1_SetLow();
+    //EnableInterrupts();
 }
 
 void LEDSingle(uint8_t address)
@@ -94,10 +95,11 @@ void SPIWrite(uint8_t data)
 {
     
     // Send
-    SSPBUF = data;
+    //SSPBUF = data;
     
     // Wait
-    while(!SSP1STATbits.BF);
+    //while(!SSP1STATbits.BF);
+    SPI_Exchange8bit(data);
 }
 
 inline void EnableInterrupts(void) {
