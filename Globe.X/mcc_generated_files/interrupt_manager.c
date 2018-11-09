@@ -1,26 +1,26 @@
 /**
-  Generated Pin Manager File
+  Generated Interrupt Manager Source File
 
-  Company:
+  @Company:
     Microchip Technology Inc.
 
-  File Name:
-    pin_manager.c
+  @File Name:
+    interrupt_manager.c
 
-  Summary:
-    This is the Pin Manager file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  @Summary:
+    This is the Interrupt Manager file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  Description:
-    This header file provides implementations for pin APIs for all pins selected in the GUI.
+  @Description:
+    This header file provides implementations for global interrupt handling.
+    For individual peripheral handlers please see the peripheral driver for
+    all modules selected in the GUI.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.65.2
         Device            :  PIC16F1619
-        Driver Version    :  2.11
+        Driver Version    :  2.03
     The generated drivers are tested against the following:
-        Compiler          :  XC8 1.45
-        MPLAB             :  MPLAB X 4.15
-
-    Copyright (c) 2013 - 2015 released Microchip Technology Inc.  All rights reserved.
+        Compiler          :  XC8 1.45 or later
+        MPLAB 	          :  MPLAB X 4.15
 */
 
 /*
@@ -46,77 +46,28 @@
     SOFTWARE.
 */
 
-#include <xc.h>
-#include "pin_manager.h"
-#include "stdbool.h"
+#include "interrupt_manager.h"
+#include "mcc.h"
 
-
-
-
-
-void PIN_MANAGER_Initialize(void)
+void __interrupt() INTERRUPT_InterruptManager (void)
 {
-    /**
-    LATx registers
-    */
-    LATA = 0x00;
-    LATB = 0x00;
-    LATC = 0x00;
-
-    /**
-    TRISx registers
-    */
-    TRISA = 0x33;
-    TRISB = 0xD0;
-    TRISC = 0x30;
-
-    /**
-    ANSELx registers
-    */
-    ANSELC = 0x00;
-    ANSELB = 0x00;
-    ANSELA = 0x13;
-
-    /**
-    WPUx registers
-    */
-    WPUB = 0x00;
-    WPUA = 0x00;
-    WPUC = 0x00;
-    OPTION_REGbits.nWPUEN = 1;
-
-    /**
-    ODx registers
-    */
-    ODCONA = 0x00;
-    ODCONB = 0x00;
-    ODCONC = 0x00;
-
-    /**
-    SLRCONx registers
-    */
-    SLRCONA = 0x37;
-    SLRCONB = 0xF0;
-    SLRCONC = 0xFF;
-
-
-
-
-
-   
-    
-	
-    SSPDATPPS = 0x15;   //RC5->MSSP:SDI;    
-    RC1PPS = 0x10;   //RC1->MSSP:SCK;    
-    RC2PPS = 0x11;   //RC2->MSSP:SDO;    
-    SSPCLKPPS = 0x11;   //RC1->MSSP:SCK;    
-    ATINPPS = 0x0E;   //RB6->AT:ATIN;    
+    // interrupt handler
+    if(INTCONbits.PEIE == 1)
+    {
+        if(PIE5bits.AT1IE == 1 && PIR5bits.AT1IF == 1)
+        {
+            AT_ISR();
+        } 
+        else
+        {
+            //Unhandled Interrupt
+        }
+    }      
+    else
+    {
+        //Unhandled Interrupt
+    }
 }
-  
-void PIN_MANAGER_IOC(void)
-{   
-}
-
 /**
  End of File
 */

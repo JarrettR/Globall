@@ -52,7 +52,7 @@ void SYSTEM_Initialize(void)
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
     SPI_Initialize();
-    CLC1_Initialize();
+    AT_Initialize();
 }
 
 void OSCILLATOR_Initialize(void)

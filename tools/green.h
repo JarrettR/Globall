@@ -6,6 +6,8 @@
 
 #ifndef HPIXELS
 #define HPIXELS 5
+#endif
+#ifndef VPIXELS
 #define VPIXELS 10
 #endif
 

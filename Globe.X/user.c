@@ -18,7 +18,8 @@
 #endif
 
 #include "user.h"
-#include "at.h"
+
+
 
 /******************************************************************************/
 /* User Functions                                                             */
@@ -56,7 +57,6 @@ void setChannel(uint8_t *blob, uint8_t channel, uint16_t value) {
 void LEDMap(uint8_t *blob)
 {
     uint8_t data = 0;
-    DisableInterrupts();
     
     XLAT1_SetLow();
     
@@ -67,9 +67,8 @@ void LEDMap(uint8_t *blob)
     }
     
     XLAT1_SetHigh();
-    __delay_ms(10);
+    __delay_us(1);
     XLAT1_SetLow();
-    //EnableInterrupts();
 }
 
 void LEDSingle(uint8_t address)

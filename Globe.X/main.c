@@ -19,7 +19,6 @@
 
 #include "mcc_generated_files/mcc.h" 
 #include "user.h" 
-#include "at.h"
 #include "gamma.h"
 #include "../tools/blue.h"
 #include "../tools/green.h"
@@ -61,38 +60,35 @@ void main(void)
     }
 
     frame = 0;
+    angleInt = 0;
     
     AT_ResolutionSet(HPIXELS - 1);
     
-    //EnableInterrupts();
-    DisableInterrupts();
+    EnableInterrupts();
+    //DisableInterrupts();
     x = 0;
     
     
     while(1)
     {
+        //LED1_Toggle();
+        //LED1_LAT = HEF_GetValue();
+        //LED1_LAT = AUX1_GetValue();
         
-            
-        //AUX1_Toggle();
-        LED1_Toggle();
-        //__delay_ms(200);
-        //LEDSingle(x);
-        //x++;
-        
-                         
-        for(i = 0; i < TABLESIZE; i++) {
-            blob[i] = 0x00;
-        }
-        
-        for(i = 0; i < 0xff; i++) {
+        if (frame != angleInt && angleInt < HPIXELS) {
+            //frame = (frame + 1 ) % HPIXELS;
+            frame = angleInt;
 
-            //SDO_SetHigh();
-            //SCK_SetHigh();
-            setChannel(blob, mapInc, gamma[i] << 16);
+            DisableInterrupts();
+            for(i = 0; i < VPIXELS; i++) {
+                setChannel(blob, i, blueMap[frame][i]);
+                //setChannel(blob, 23 - i, greenMap[frame][i]);
+            }
             LEDMap(blob);
+            EnableInterrupts();
+            //__delay_ms(100);
         }
         
-        mapInc = (mapInc + 1) % 36;
     }
 
 }

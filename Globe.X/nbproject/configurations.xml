@@ -11,10 +11,10 @@
         <itemPath>mcc_generated_files/mcc.h</itemPath>
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/device_config.h</itemPath>
-        <itemPath>mcc_generated_files/clc1.h</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
+        <itemPath>mcc_generated_files/at.h</itemPath>
       </logicalFolder>
       <itemPath>user.h</itemPath>
-      <itemPath>at.h</itemPath>
       <itemPath>../tools/blue.h</itemPath>
       <itemPath>../tools/green.h</itemPath>
       <itemPath>gamma.h</itemPath>
@@ -33,11 +33,11 @@
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/device_config.c</itemPath>
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
-        <itemPath>mcc_generated_files/clc1.c</itemPath>
+        <itemPath>mcc_generated_files/at.c</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>user.c</itemPath>
-      <itemPath>at.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
