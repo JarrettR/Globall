@@ -24,6 +24,7 @@ class PixelConverter(object):
 
     def save(self, filename, filetype, constName, fragmented, large):
         if filetype == 'csv':
+            print(filename)
             f = open(filename + '.csv', 'w')
             for i in range(self.imageField.length()):
                 for x in range(self.imageField.length(i)):
@@ -176,4 +177,4 @@ if __name__ == '__main__':
 
     obj = PixelConverter(args.input)
     obj.process(args.width, args.height, args.invert)
-    obj.save(args.output, args.format, args.const, args.fragmented, args.large)
+    obj.save(args.output, args.type, args.const, args.fragmented, args.large)
