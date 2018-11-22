@@ -8,13 +8,16 @@ Tools
 
 This is a tool that takes in image files, processes them, and then exports them into PNG, CSV, or C code formats.
 
+For this particular project, the command to generate the final files is:
+` python convert.py -i World_map.png -t c -n -v -c blueMap -x 60 -y 20 -o blue `
+
 Type `python convert.py --help` for full list of options. At present, this is the output:
 
 ```
 > python convert.py --help
 
-usage: convert.py [-h] [-x WIDTH] [-y HEIGHT] [-i INPUT] [-o OUTPUT]
-                  [-f FORMAT] [-n] [-c CONST] [-v]
+usage: convert.py [-h] [-x WIDTH] [-y HEIGHT] [-i INPUT] [-o OUTPUT] [-t TYPE]
+                  [-n] [-c CONST] [-f] [-l] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -26,11 +29,12 @@ optional arguments:
                         Input file
   -o OUTPUT, --output OUTPUT
                         Output file, no extension
-  -f FORMAT, --format FORMAT
-                        Output format(csv, png, or c)
+  -t TYPE, --type TYPE  Output format(csv, png, or c)
   -n, --invert          Invert pixel weight
   -c CONST, --const CONST
                         (C output only) Const var name
+  -f, --fragmented      Split up data for fragmented memory
+  -l, --large           Larger, 12-bit pixels
   -v, --verbose         Print out internal variables
 ```
 
@@ -57,6 +61,12 @@ Simple, small image of multiple colours, intended to test the conversion process
 ![scrolltest](scrolltest.png)
 
 A human-recognisable pattern to easily check correct pixel order on the physical test bench.
+
+#### cycle.png
+
+![cycle](cycle.png)
+
+A similar human-recognisable pattern to the above.
 
 
 #### right-align.png and left-align.png
