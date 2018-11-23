@@ -110,7 +110,7 @@ void PIN_MANAGER_Initialize(void)
     RC1PPS = 0x10;   //RC1->MSSP:SCK;    
     RC2PPS = 0x11;   //RC2->MSSP:SDO;    
     SSPCLKPPS = 0x11;   //RC1->MSSP:SCK;    
-    ATINPPS = 0x0E;   //RB6->AT:ATIN;    
+    ATINPPS = 0x0C;   //RB4->AT:ATIN;    
 }
   
 void PIN_MANAGER_IOC(void)
