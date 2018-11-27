@@ -71,9 +71,15 @@ void main(void)
     
     while(1)
     {
-        //LED1_Toggle();
-        //LED1_LAT = HEF_GetValue();
-        //LED1_LAT = AUX1_GetValue();
+        //Green LED mirrors HEF sensor for alignment with magnets
+        if(AT_IsMeasurementValid()) {
+            LED1_SetLow();
+        } else {
+            LED1_LAT = HEF_GetValue();
+            
+            //LED1_Toggle();
+            //LED1_LAT = AUX1_GetValue();
+        }
         
         if (frame != angleInt && angleInt < HPIXELS) {
             //frame = (frame + 1 ) % HPIXELS;

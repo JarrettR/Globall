@@ -40,7 +40,7 @@ void setChannel(uint8_t *blob, uint8_t channel, uint16_t value) {
         newVal = rvalue | newVal;
         
         *(blob + byteAddr + 1) = newVal;
-    } else {
+    } else { //channel % 2 == 1
         byteAddr = (((channel - 1) * 3) >> 1) + 1;
         
         lvalue = (uint8_t)(value << 4) & 0xF0;

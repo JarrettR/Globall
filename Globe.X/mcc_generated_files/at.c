@@ -209,14 +209,15 @@ void AT_ISR(void)
 void AT_Period(void)
 {
     AT1IR0bits.AT1PERIF = 0;
-    LED1_Toggle();
+    //LED1_SetHigh();
     angleInt = 0;
 }
 
 void AT_Phase(void)
 {
     AT1IR0bits.AT1PHSIF = 0;
-    AUX1_Toggle();
+    //AUX1_Toggle();
+    //LED1_SetLow();
     angleInt++;
 }
 
