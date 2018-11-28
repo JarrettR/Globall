@@ -18,15 +18,13 @@ By arranging LEDs around a circle and spinning it very rapidly, an image can be 
 
 Mechanical, PCB, and spinning globe:
 
-![Mechanical Design](/docs/1-mechanical.png =300x)
-![PCB Design](/docs/2-pcb.jpg =300x)
-![Spin](/docs/3-world.jpg =300x)
+
+<img src="/docs/1-mechanical.png" alt="" data-canonical-src="/docs/1-mechanical.png" width="250" /><img src="/docs/2-pcb.jpg" alt="" data-canonical-src="/docs/2-pcb.jpg" width="250" /><img src="/docs/3-world.jpg" alt="" data-canonical-src="/docs/3-world.jpg" width="250" />
+
 
 Pattern-making:
 
-![Pattern 1](/docs/4-pattern1.jpg =300x)
-![Pattern 2](/docs/5-pattern2.jpg =300x)
-![Pattern 3](/docs/6-pattern3.jpg =300x)
+<img src="/docs/4-pattern1.jpg" alt="" data-canonical-src="/docs/4-pattern1.jpg" width="250" /><img src="/docs/5-pattern2.jpg" alt="" data-canonical-src="/docs/5-pattern2.jpg" width="250" /><img src="/docs/6-pattern3.jpg" alt="" data-canonical-src="/docs/6-pattern3.jpg" width="250" />
 
 
 ### Status
