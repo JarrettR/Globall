@@ -4,7 +4,7 @@ Globall
 
 ### What's this?
 
-This is a persistence-of-vision-based 3D globe.
+This is a persistence-of-vision globe.
 
 ### What's that?
 
@@ -16,9 +16,17 @@ By arranging LEDs around a circle and spinning it very rapidly, an image can be 
 
 ### Pictures
 
-![Mechanical Design](/docs/1-mechanical.png "Mechanicals")
-![PCB Design](/docs/2-pcb.png "PCB")
-![Spin Design](/docs/3-spin.png "Spun Up")
+Mechanical, PCB, and spinning globe:
+
+![Mechanical Design](/docs/1-mechanical.png =300x)
+![PCB Design](/docs/2-pcb.jpg =300x)
+![Spin](/docs/3-world.jpg =300x)
+
+Pattern-making:
+
+![Pattern 1](/docs/4-pattern1.jpg =300x)
+![Pattern 2](/docs/5-pattern2.jpg =300x)
+![Pattern 3](/docs/6-pattern3.jpg =300x)
 
 
 ### Status
@@ -31,11 +39,8 @@ The image converter in the tools page might be useful for other POV systems at t
 
 ### Contributing
 
-Please don't, just yet! This is a relatively easy practice project, and I'd like to work through all the pitfalls myself. Suggestions welcome, however.
-
+This is a (mostly) hardware project! I don't know what contributions are possible! Hardware pull requests are unlikely to be accepted, but give anything else a shot, I guess. I'm open to it.
 
 ### Further Reading
 
-When there is a minimal level of completion, something will be on my website, [here](https://jrainimo.com/build/).
-
-Until then, I am writing regular build logs on the [Hackaday Projects](https://hackaday.io/project/27580) site. Be warned, unpolished content ahead.
+I have written a summary post about this on my website, [here](https://jrainimo.com/build/?p=1176).
