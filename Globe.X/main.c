@@ -44,7 +44,8 @@ void main(void)
     SYSTEM_Initialize();
 
     unsigned int i;
-    uint8_t x;
+    uint16_t delayTimer = 0;
+    uint8_t testLed = 0;    
     unsigned int frame;
     uint8_t mapInc = 5;    
     
@@ -66,33 +67,54 @@ void main(void)
     
     EnableInterrupts();
     //DisableInterrupts();
-    x = 0;
     
+    for(i = 0; i < VPIXELS; i++) {
+        setChannel(blob, i, 0xFFFF);
+    }
+    LEDMap(blob);
     
     while(1)
     {
         //Green LED mirrors HEF sensor for alignment with magnets
-        if(AT_IsMeasurementValid()) {
-            LED1_SetLow();
-        } else {
+        //LEDs display a test pattern
+        if(!AT_IsMeasurementValid()) {
+            //DisableInterrupts();
+            
+            //Magnet calibration mode
             LED1_LAT = HEF_GetValue();
             
-            //LED1_Toggle();
-            //LED1_LAT = AUX1_GetValue();
-        }
-        
-        if (frame != angleInt && angleInt < HPIXELS) {
-            //frame = (frame + 1 ) % HPIXELS;
-            frame = angleInt;
-
-            DisableInterrupts();
-            for(i = 0; i < VPIXELS; i++) {
-                setChannel(blob, i, blueMap[frame][i]);
-                //setChannel(blob, 23 - i, greenMap[frame][i]);
+            delayTimer++;
+            
+            if(delayTimer == 0xFFFF) {
+                for(i = 0; i < VPIXELS; i++) {
+                    //x =  (blueMap[frame][i] << 4) & blueMap[frame][i];
+                    //setChannel(blob, i, blueMap[frame][i]);
+                    setChannel(blob, i, 0);
+                    setChannel(blob, testLed, 0xFFF);
+                    //setChannel(blob, 23 - i, greenMap[frame][i]);
+                }
+                LEDMap(blob);
+                testLed = ++testLed % VPIXELS;
             }
-            LEDMap(blob);
-            EnableInterrupts();
-            //__delay_ms(100);
+            
+        } else {
+            LED1_SetLow();
+            //EnableInterrupts();
+        
+            if (frame != angleInt && angleInt < HPIXELS) {
+                //frame = (frame + 1 ) % HPIXELS;
+                frame = angleInt;
+
+                DisableInterrupts();
+                for(i = 0; i < VPIXELS; i++) {
+                    //x =  (blueMap[frame][i] << 4) & blueMap[frame][i];
+                    setChannel(blob, i, blueMap[frame][i]);
+                    //setChannel(blob, 23 - i, greenMap[frame][i]);
+                }
+                LEDMap(blob);
+                EnableInterrupts();
+                //__delay_ms(100);
+            }
         }
         
     }
