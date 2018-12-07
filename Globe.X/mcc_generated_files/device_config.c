@@ -47,7 +47,7 @@
 // Configuration bits: selected in the GUI
 
 // CONFIG1
-#pragma config FOSC = INTOSC    // Oscillator Selection Bits->INTOSC oscillator: I/O function on CLKIN pin
+#pragma config FOSC = ECH    // Oscillator Selection Bits->ECH, External Clock, High Power Mode (4-32 MHz): device clock supplied to CLKIN pins
 #pragma config PWRTE = OFF    // Power-up Timer Enable->PWRT disabled
 #pragma config MCLRE = ON    // MCLR Pin Function Select->MCLR/VPP pin function is MCLR
 #pragma config CP = OFF    // Flash Program Memory Code Protection->Program memory code protection is disabled

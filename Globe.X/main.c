@@ -85,16 +85,23 @@ void main(void)
             
             delayTimer++;
             
-            if(delayTimer == 0xFFFF) {
-                for(i = 0; i < VPIXELS; i++) {
+            if(delayTimer >= 0xFFF) {
+                for(i = 0; i <= VPIXELS; i++) {
                     //x =  (blueMap[frame][i] << 4) & blueMap[frame][i];
                     //setChannel(blob, i, blueMap[frame][i]);
-                    setChannel(blob, i, 0);
-                    setChannel(blob, testLed, 0xFFF);
+                    
+                    if (testLed < VPIXELS) {
+                        setChannel(blob, i, 0);
+                        setChannel(blob, testLed, 0xFFF);
+                    } else {
+                        setChannel(blob, i, 0xFFF);
+                        setChannel(blob, testLed - VPIXELS, 0);
+                    }
                     //setChannel(blob, 23 - i, greenMap[frame][i]);
                 }
                 LEDMap(blob);
-                testLed = ++testLed % VPIXELS;
+                testLed = ++testLed % ((VPIXELS * 2) + 1);
+                delayTimer = 0xFFFF;
             }
             
         } else {
