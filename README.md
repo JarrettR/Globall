@@ -39,6 +39,10 @@ The image converter in the tools page might be useful for other POV systems at t
 
 This is a (mostly) hardware project! I don't know what contributions are possible! Hardware pull requests are unlikely to be accepted, but give anything else a shot, I guess. I'm open to it.
 
+### Useful takeaways
+
+Check the `tools` folder for the Python tool I wrote to generate the image data. It should be fairly extentible to any projects that require displaying images programmatically.
+
 ### Further Reading
 
 I have written a summary post about this on my website, [here](https://jrainimo.com/build/?p=1176).

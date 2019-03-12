@@ -8,6 +8,10 @@ Tools
 
 This is a tool that takes in image files, processes them, and then exports them into PNG, CSV, or C code formats.
 
+First, install the only prerequisite, the Python Imaging Library:
+`pip install pillow`
+You might need to run that with `sudo` or as an administrator on Windows.
+
 For this particular project, the command to generate the final files is:
 ` python convert.py -i World_map.png -t c -n -v -c blueMap -x 60 -y 20 -o blue `
 
@@ -40,9 +44,9 @@ optional arguments:
 
 This was intended to be reusable, and is fairly robust.
 
-It should take any image format and convert it to greyscale, although this has not been tested exhaustively. PNG files work well.
+It should take any image format and convert it to greyscale, although different formats have not been tested exhaustively. PNG files work well.
 
-For this project, sensible defaults (and the ones included in the firmware) are generated using `sh gen.sh`
+For this project, sensible defaults (and the ones included in the firmware) are generated using `./gen.sh`
 
 
 ### Sample Inputs
